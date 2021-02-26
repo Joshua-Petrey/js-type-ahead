@@ -1,4 +1,6 @@
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+// grab elements
 const searchInput = document.querySelector('.search')
 const suggestions = document.querySelector('.suggestions')
 const cities = [];
@@ -13,18 +15,18 @@ fetch(endpoint)
         console.log(e.message)
     })
 
-
-function findMatches(wordToMatch, citiesArray) {
+// filter the cities array for a city or state that matches the users query
+function findMatches(userQuery, citiesArray) {
     return cities.filter( place => {
         // need RegeExp instance to use variables
-        const regex = new RegExp(wordToMatch, 'gi');
-        // if regex match a city or state name reurn it
+        const regex = new RegExp(userQuery, 'gi');
+        // if regex matches a city or state name return it
         return place.city.match(regex) || place.state.match(regex);
     })
 }
 
 function displayMatches(){
-    // get the matches for current input, this.value is the search query
+    // get the matches for current input, this.value is the user's query
     const matchesArray = findMatches(this.value, cities);
     html = matchesArray.map(place => {
 
@@ -48,6 +50,5 @@ function displayMatches(){
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-// 
 searchInput.addEventListener('change', displayMatches)
 searchInput.addEventListener('keyup', displayMatches)
